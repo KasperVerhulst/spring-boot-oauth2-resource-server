@@ -10,7 +10,8 @@ import org.rockkit.poc.resourceserver.model.BookDTO;
 
 import java.util.List;
 
-@RestController(BookController.PATH)
+@RestController
+@RequestMapping(BookController.PATH)
 public class BookController {
 
     protected static final String PATH = "/api/v1/books";
@@ -22,14 +23,13 @@ public class BookController {
         this.bookService = bookService;
     }
 
-
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public BookDTO getBook(@PathVariable Long id) {
         return this.bookService.getBook(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Book> getBooks() {
+    public List<BookDTO> getBooks() {
         return this.bookService.getAllBooks();
     }
 

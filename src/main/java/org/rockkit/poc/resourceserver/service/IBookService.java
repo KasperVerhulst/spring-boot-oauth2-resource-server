@@ -6,10 +6,10 @@ import org.rockkit.poc.resourceserver.model.BookDTO;
 
 import java.util.List;
 
-@Service
+
 public interface IBookService {
 
-    public List<Book> getAllBooks();
+    public List<BookDTO> getAllBooks();
     public BookDTO getBook(Long id);
 
     public void createBook(BookDTO bookDTO);
