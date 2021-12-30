@@ -4,6 +4,7 @@ import org.rockkit.poc.resourceserver.model.Book;
 import org.rockkit.poc.resourceserver.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.rockkit.poc.resourceserver.model.BookDTO;
@@ -39,6 +40,7 @@ public class BookController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public void addBook(@RequestBody BookDTO book) {
 
     }

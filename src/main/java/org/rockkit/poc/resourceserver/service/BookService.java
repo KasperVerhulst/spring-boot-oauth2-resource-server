@@ -4,6 +4,7 @@ package org.rockkit.poc.resourceserver.service;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeMap;
+import org.rockkit.poc.resourceserver.exception.BookNotFoundException;
 import org.rockkit.poc.resourceserver.model.Book;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 import org.rockkit.poc.resourceserver.repository.BookRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("BookService")
@@ -43,12 +45,20 @@ public class BookService implements IBookService{
     @Override
     public List<BookDTO> getAllBooks() {
          List<Book> books = this.repo.findAll();
-         return books.stream().map(x -> convertEntityToDTO(x)).collect(Collectors.toList());
+         if (! books.isEmpty())
+             return books.stream().map(b -> convertEntityToDTO(b)).collect(Collectors.toList());
+         else
+             throw new BookNotFoundException("No books found");
     }
 
     @Override
     public BookDTO getBook(Long id) {
-         return this.convertEntityToDTO(this.repo.findById(id).orElse(null));
+        Optional<Book> book = this.repo.findById(id);
+        if (book.isPresent())
+            return this.convertEntityToDTO(book.get());
+        else
+            throw new BookNotFoundException("This book does not exist");
+
 
     }
 
