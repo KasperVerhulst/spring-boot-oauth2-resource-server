@@ -9,6 +9,7 @@ import org.rockkit.poc.resourceserver.model.Book;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 import org.rockkit.poc.resourceserver.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -79,7 +80,12 @@ public class BookService implements IBookService{
 
     @Override
     public void deleteBook(Long id) {
-        this.repo.deleteById(id);
+        try {
+            this.repo.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new BookNotFoundException("This book does not exist");
+        }
     }
 
 
