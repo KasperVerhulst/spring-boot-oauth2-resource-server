@@ -74,17 +74,7 @@ public class BookService implements IBookService{
     public void createBook(BookDTO bookDTO) {
 
         try {
-            // here the Book entity is created with a "fresh" Author
-            Book book = mapper.map(bookDTO, Book.class);
-
-            //look if there already exists and author with that name
-            Author author = authorRepo.findByFirstNameAndLastName(bookDTO.getAuthor().getFirstName(),bookDTO.getAuthor().getLastName());
-
-            //if the author already exists, add the author to this book
-            if ( author != null) {
-                book.setAuthor(author);
-            }
-
+            Book book = convertDTOToEntity(bookDTO);
             book.setCreatedAt(LocalDateTime.now());
             this.bookRepo.save(book);
         }
@@ -110,6 +100,7 @@ public class BookService implements IBookService{
         try {
             this.bookRepo.deleteById(id);
         }
+
         //trying to delete a book that does not exist
         catch (EmptyResultDataAccessException e) {
             throw new BookNotFoundException("This book does not exist");
@@ -122,6 +113,17 @@ public class BookService implements IBookService{
     }
 
     private Book convertDTOToEntity(BookDTO bookDTO) {
-        return mapper.map(bookDTO, Book.class);
+        // here the Book entity is created with a "fresh" Author
+        Book book = mapper.map(bookDTO, Book.class);
+
+        //look if there already exists and author with that name
+        Author author = authorRepo.findByFirstNameAndLastName(bookDTO.getAuthor().getFirstName(),bookDTO.getAuthor().getLastName());
+
+        //if the author already exists, add the author to this book
+        if ( author != null) {
+            book.setAuthor(author);
+        }
+
+        return book;
     }
 }

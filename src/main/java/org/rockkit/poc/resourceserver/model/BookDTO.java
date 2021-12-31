@@ -2,6 +2,7 @@ package org.rockkit.poc.resourceserver.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,8 @@ import java.util.Set;
 
 @Getter
 @Setter
+//omit fields in JSON when null
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookDTO {
 
     @JsonIgnore
