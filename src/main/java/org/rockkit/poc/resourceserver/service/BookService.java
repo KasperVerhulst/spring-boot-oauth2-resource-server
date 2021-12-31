@@ -87,13 +87,15 @@ public class BookService implements IBookService{
 
             book.setCreatedAt(LocalDateTime.now());
             this.bookRepo.save(book);
+        }
 
-        } catch (DataIntegrityViolationException e) {
+        //throw exception if book already exists
+        catch (DataIntegrityViolationException e) {
             throw new BookAlreadyExistsException("Book already exists");
         }
 
 
-        //throw exception if book already exists
+
 
     }
 
