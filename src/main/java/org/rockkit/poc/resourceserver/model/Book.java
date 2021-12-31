@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.Year;
+
 import java.util.Set;
 
 
@@ -21,9 +21,9 @@ public class Book {
 
     private String title;
 
-    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @JoinColumn( name="AUTHOR_FIRSTNAME", referencedColumnName="firstName")
-    @JoinColumn(name="AUTHOR_LASTNAME", referencedColumnName="lastName")
+    @JoinColumn( name="AUTHOR_LASTNAME", referencedColumnName="lastName")
     private Author author;
 
     private String publisher;

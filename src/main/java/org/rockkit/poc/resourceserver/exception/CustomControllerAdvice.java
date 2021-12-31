@@ -12,4 +12,9 @@ public class CustomControllerAdvice {
     public ResponseEntity<ErrorResponse> handleBookNotFoundException(BookNotFoundException e) {
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.toString(), e.getMessage(), e.toString()),HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BookAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleBookAlreadyExistsException(BookAlreadyExistsException e) {
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CONFLICT.toString(), e.getMessage(), e.toString()),HttpStatus.CONFLICT);
+    }
 }

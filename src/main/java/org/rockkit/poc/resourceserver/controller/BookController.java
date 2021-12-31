@@ -41,8 +41,8 @@ public class BookController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBook(@RequestBody BookDTO book) {
-
+    public void addBook(@RequestBody BookDTO bookDTO) {
+        this.bookService.createBook(bookDTO);
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
