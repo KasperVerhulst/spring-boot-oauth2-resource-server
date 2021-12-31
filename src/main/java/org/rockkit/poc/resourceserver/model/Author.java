@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -22,8 +23,10 @@ public class Author implements  Serializable{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Author needs a first name")
     private String firstName;
 
+    @NotBlank(message = "Author needs a last name")
     private String lastName;
 
     private LocalDate birthDate;
@@ -45,9 +48,11 @@ public class Author implements  Serializable{
     //constructor that will be used for deserialization
     @JsonCreator
     public Author(String fullName) {
-        String [] name = fullName.split(" ",2);
+        String[] name = fullName.split(" ", 2);
+
         this.firstName = name[0];
         this.lastName = name[1];
+
     }
 
     //Method that determines how an Author will be presented in JSON

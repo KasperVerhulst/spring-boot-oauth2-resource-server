@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class BookController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBook(@RequestBody BookDTO bookDTO) {
+    public void addBook( @Valid @RequestBody BookDTO bookDTO) {
         this.bookService.createBook(bookDTO);
     }
 
