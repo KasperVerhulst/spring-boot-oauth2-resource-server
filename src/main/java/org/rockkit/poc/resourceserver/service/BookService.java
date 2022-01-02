@@ -11,17 +11,19 @@ import org.rockkit.poc.resourceserver.model.BookDTO;
 import org.rockkit.poc.resourceserver.repository.AuthorRepository;
 import org.rockkit.poc.resourceserver.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Primary
 @Service("BookService")
 public class BookService implements IBookService{
 
@@ -75,7 +77,6 @@ public class BookService implements IBookService{
 
         try {
             Book book = convertDTOToEntity(bookDTO);
-            book.setCreatedAt(LocalDateTime.now());
             this.bookRepo.save(book);
         }
 
@@ -114,7 +115,14 @@ public class BookService implements IBookService{
 
     private Book convertDTOToEntity(BookDTO bookDTO) {
         // here the Book entity is created with a "fresh" Author
+        // and no creation date
         Book book = mapper.map(bookDTO, Book.class);
+
+        if (bookDTO.getId() != null) {
+            book.setCreatedAt(this.bookRepo.getById(bookDTO.getId()).getCreatedAt());
+        }
+        else
+            book.setCreatedAt(LocalDateTime.now());
 
         //look if there already exists and author with that name
         Author author = authorRepo.findByFirstNameAndLastName(bookDTO.getAuthor().getFirstName(),bookDTO.getAuthor().getLastName());

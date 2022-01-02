@@ -26,7 +26,7 @@ public class Book {
     @NotBlank
     private String title;
 
-    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinColumn( name="AUTHOR_FIRSTNAME", referencedColumnName="firstName")
     @JoinColumn( name="AUTHOR_LASTNAME", referencedColumnName="lastName")
     @Valid
