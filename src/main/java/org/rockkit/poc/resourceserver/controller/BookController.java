@@ -1,14 +1,17 @@
 package org.rockkit.poc.resourceserver.controller;
 
+import org.rockkit.poc.resourceserver.exception.BookNotFoundException;
 import org.rockkit.poc.resourceserver.model.Book;
 import org.rockkit.poc.resourceserver.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,14 +42,25 @@ public class BookController {
         this.bookService.deleteBook(id);
     }
 
+    //POST is not idempotent
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBook(@RequestBody BookDTO bookDTO) {
+    public void addBook( @Valid @RequestBody BookDTO bookDTO) {
         this.bookService.createBook(bookDTO);
     }
 
+    //PUT must be idempotent
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateBook(@RequestBody BookDTO book, @PathVariable Long id) {
-
+    public ResponseEntity updateBook(@Valid @RequestBody BookDTO bookDTO, @PathVariable Long id) {
+        try {
+            this.bookService.getBook(id);
+            bookDTO.setId(id);
+            this.bookService.updateBook(bookDTO);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        catch (BookNotFoundException e) {
+            this.bookService.createBook(bookDTO);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
     }
 }

@@ -11,17 +11,19 @@ import org.rockkit.poc.resourceserver.model.BookDTO;
 import org.rockkit.poc.resourceserver.repository.AuthorRepository;
 import org.rockkit.poc.resourceserver.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Primary
 @Service("BookService")
 public class BookService implements IBookService{
 
@@ -74,26 +76,17 @@ public class BookService implements IBookService{
     public void createBook(BookDTO bookDTO) {
 
         try {
-            // here the Book entity is created with a "fresh" Author
-            Book book = mapper.map(bookDTO, Book.class);
-
-            //look if there already exists and author with that name
-            Author author = authorRepo.findByFirstNameAndLastName(bookDTO.getAuthor().getFirstName(),bookDTO.getAuthor().getLastName());
-
-            //if the author already exists, add the author to this book
-            if ( author != null) {
-                book.setAuthor(author);
-            }
-
-            book.setCreatedAt(LocalDateTime.now());
+            Book book = convertDTOToEntity(bookDTO);
             this.bookRepo.save(book);
+        }
 
-        } catch (DataIntegrityViolationException e) {
+        //throw exception if book already exists
+        catch (DataIntegrityViolationException e) {
             throw new BookAlreadyExistsException("Book already exists");
         }
 
 
-        //throw exception if book already exists
+
 
     }
 
@@ -108,6 +101,7 @@ public class BookService implements IBookService{
         try {
             this.bookRepo.deleteById(id);
         }
+
         //trying to delete a book that does not exist
         catch (EmptyResultDataAccessException e) {
             throw new BookNotFoundException("This book does not exist");
@@ -120,6 +114,24 @@ public class BookService implements IBookService{
     }
 
     private Book convertDTOToEntity(BookDTO bookDTO) {
-        return mapper.map(bookDTO, Book.class);
+        // here the Book entity is created with a "fresh" Author
+        // and no creation date
+        Book book = mapper.map(bookDTO, Book.class);
+
+        if (bookDTO.getId() != null) {
+            book.setCreatedAt(this.bookRepo.getById(bookDTO.getId()).getCreatedAt());
+        }
+        else
+            book.setCreatedAt(LocalDateTime.now());
+
+        //look if there already exists and author with that name
+        Author author = authorRepo.findByFirstNameAndLastName(bookDTO.getAuthor().getFirstName(),bookDTO.getAuthor().getLastName());
+
+        //if the author already exists, add the author to this book
+        if ( author != null) {
+            book.setAuthor(author);
+        }
+
+        return book;
     }
 }
