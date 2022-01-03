@@ -13,6 +13,7 @@ import org.rockkit.poc.resourceserver.model.BookDTO;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(BookController.PATH)
@@ -62,5 +63,13 @@ public class BookController {
             this.bookService.createBook(bookDTO);
             return new ResponseEntity(HttpStatus.CREATED);
         }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void patchBook(@RequestBody Map<String, Object> payload, @PathVariable Long id) {
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setId(id);
+        this.bookService.partialUpdate(payload, bookDTO);
     }
 }

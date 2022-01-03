@@ -17,10 +17,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Primary
@@ -84,15 +87,48 @@ public class BookService implements IBookService{
         catch (DataIntegrityViolationException e) {
             throw new BookAlreadyExistsException("Book already exists");
         }
-
-
-
-
     }
 
     @Override
     public void updateBook(BookDTO bookDTO) {
         Book book = convertDTOToEntity(bookDTO);
+        this.bookRepo.save(book);
+    }
+
+    @Override
+    public void partialUpdate(Map<String, Object> payload, BookDTO bookDTO) {
+        Book book = this.bookRepo.findById(bookDTO.getId()).orElseThrow(BookNotFoundException::new);
+        for (String field : payload.keySet()) {
+            switch (field.toLowerCase()) {
+                case "title":
+                    book.setTitle((String) payload.get(field));
+                    break;
+
+                case "isbn":
+                    book.setIsbn(new Long((Integer) payload.get(field)));
+                    break;
+
+                case "publisher":
+                    book.setPublisher((String) payload.get(field));
+                    break;
+
+                case "author":
+                    book.setAuthor(new Author((String) payload.get(field)));
+                    break;
+
+                case "release":
+                    book.setReleaseYear((Integer) payload.get(field));
+                    break;
+
+                case "genres":
+                    book.setGenres(Set.copyOf((List<String>) payload.get(field)));
+                    break;
+
+                //unknown JSON field to update
+                default:
+
+            }
+        }
         this.bookRepo.save(book);
     }
 
@@ -134,4 +170,6 @@ public class BookService implements IBookService{
 
         return book;
     }
+
+
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface IBookService {
@@ -13,6 +14,8 @@ public interface IBookService {
     public BookDTO getBook(Long id);
 
     public void createBook(BookDTO bookDTO);
+
+    public void partialUpdate(Map<String,Object> update, BookDTO bookDTO);
 
     public void updateBook(BookDTO bookDTO);
 
