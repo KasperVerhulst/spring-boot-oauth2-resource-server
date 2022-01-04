@@ -26,8 +26,6 @@ public class BookController {
 
     private final IBookService bookService;
 
-    //max number of books returned in one request
-    private static final int PAGE_SIZE_LIMIT = 100;
 
     @Autowired
     public BookController(@Qualifier("BookService")  IBookService bookService) {
@@ -41,8 +39,6 @@ public class BookController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDTO> getBooks(Pageable page) {
-        if (page.getPageSize() > this.PAGE_SIZE_LIMIT)
-            page = PageRequest.of(page.getPageNumber(),PAGE_SIZE_LIMIT);
         return this.bookService.getAllBooks(page);
     }
 
