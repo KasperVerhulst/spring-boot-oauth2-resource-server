@@ -8,6 +8,7 @@ import org.rockkit.poc.resourceserver.exception.BookAlreadyExistsException;
 import org.rockkit.poc.resourceserver.model.Author;
 import org.rockkit.poc.resourceserver.model.Book;
 import org.rockkit.poc.resourceserver.model.BookDTO;
+import org.rockkit.poc.resourceserver.model.BookModelMapper;
 import org.rockkit.poc.resourceserver.repository.AuthorRepository;
 import org.rockkit.poc.resourceserver.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,26 +31,10 @@ public class BookService implements IBookService{
 
 
     private BookRepository bookRepo;
-    private AuthorRepository authorRepo;
-    private ModelMapper mapper;
-
 
     @Autowired
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
-        this.mapper = new ModelMapper();
-        mapper.createTypeMap(BookDTO.class, Book.class)
-                .addMapping(BookDTO::getRelease,Book::setReleaseYear)
-                .addMappings(
-                        new PropertyMap<BookDTO, Book>() {
-                            @Override
-                            protected void configure() {
-                                using(ctx -> LocalDateTime.now())
-                                        .map(source, destination.getUpdatedAt());
-                            }
-                        });
-
+    public BookService(BookRepository bookRepository) {
         this.bookRepo = bookRepository;
-        this.authorRepo = authorRepository;
     }
 
 
@@ -57,7 +42,7 @@ public class BookService implements IBookService{
     public List<BookDTO> getAllBooks(Pageable page) {
          Page<Book> books = this.bookRepo.findAll(page);
          if (! books.isEmpty())
-             return books.stream().map(b -> convertEntityToDTO(b)).collect(Collectors.toList());
+             return books.stream().map(b -> BookModelMapper.convertEntityToDTO(b)).collect(Collectors.toList());
          else
              throw new BookNotFoundException("No books found");
     }
@@ -67,7 +52,7 @@ public class BookService implements IBookService{
     public BookDTO getBook(Long id) {
         Optional<Book> book = this.bookRepo.findById(id);
         if (book.isPresent())
-            return this.convertEntityToDTO(book.get());
+            return BookModelMapper.convertEntityToDTO(book.get());
         else
             throw new BookNotFoundException("This book does not exist");
 
@@ -78,7 +63,7 @@ public class BookService implements IBookService{
     public void createBook(BookDTO bookDTO) {
 
         try {
-            Book book = convertDTOToEntity(bookDTO);
+            Book book = BookModelMapper.convertDTOToEntity(bookDTO);
             this.bookRepo.save(book);
         }
 
@@ -94,7 +79,7 @@ public class BookService implements IBookService{
 
     @Override
     public void updateBook(BookDTO bookDTO) {
-        Book book = convertDTOToEntity(bookDTO);
+        Book book = BookModelMapper.convertDTOToEntity(bookDTO);
         this.bookRepo.save(book);
     }
 
@@ -111,29 +96,5 @@ public class BookService implements IBookService{
     }
 
 
-    private BookDTO convertEntityToDTO(Book book) {
-        return mapper.map(book, BookDTO.class);
-    }
 
-    private Book convertDTOToEntity(BookDTO bookDTO) {
-        // here the Book entity is created with a "fresh" Author
-        // and no creation date
-        Book book = mapper.map(bookDTO, Book.class);
-
-        if (bookDTO.getId() != null) {
-            book.setCreatedAt(this.bookRepo.getById(bookDTO.getId()).getCreatedAt());
-        }
-        else
-            book.setCreatedAt(LocalDateTime.now());
-
-        //look if there already exists and author with that name
-        Author author = authorRepo.findByFirstNameAndLastName(bookDTO.getAuthor().getFirstName(),bookDTO.getAuthor().getLastName());
-
-        //if the author already exists, add the author to this book
-        if ( author != null) {
-            book.setAuthor(author);
-        }
-
-        return book;
-    }
 }
