@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping(BookController.PATH)
 public class BookController {
 
+    //API versioning
     protected static final String PATH = "/api/v1/books";
 
     private final IBookService bookService;

@@ -43,9 +43,31 @@ Constructor injection is generally preferred:
 * You don't need reflection to create tests
 
 ### Service layer interface
-Creating an interface for your business logic is good practice for complexer projects as it allows again for loose coupling. 
+Creating an interface for your business logic is good practice for complexer projects. Although it may not be necessary here, 
+it allows again for loose coupling between the Controller and the Service.
 The interface defines the functionality, but multiple implementations can exist for different databases. You can inject the 
 interface in the controller and in case multiple implementations exist, the tags `@Qualifier` or `@Primary` allows you to select the desired
-implementation.
+implementation. With `@Qualifier` you can select the name of a specific Component, with `@Primary` you can define a default implementation that will be
+injected when no specific `@Qualifier` is specified.
 
 ## REST API standard
+### Http Status Codes
+
+* 200 *Ok* : successful get or update
+* 201 *Created* : successful creation
+* 202 *Accepted* : request was correctly received but not yet processed
+
+* 301 *Moved Permanently* : URL of the requested resource has been changed permanently. The new URL is given by the Location header field in the response.
+* 302 *Found* : URL of the requested resource has been changed temporarily. The new URL is given by the Location field in the response.
+
+* 400 *Bad Request* :  incorrect syntax of the request
+* 401 *Unauthorized* : client did not bring any authentication
+* 403 *Forbidden* : client is authenticated but not authorized
+* 404 *Not Found* : resource does not exist
+* 405 *Method Not Allowed* : client tried to use an HTTP method that the resource does not allow
+* 406 *Not Acceptable* : indicates that the API is not able to generate any of the client’s preferred media types, as indicated by the Accept request header
+* 409 *Conflict* : request could not be completed due to a conflict with the current state of the resource
+* 410 *Gone* : resource existed before, but is no longer available
+### Filter, Pagination and Sorting
+
+### HATEOAS
