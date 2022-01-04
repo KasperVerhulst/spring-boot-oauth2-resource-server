@@ -31,6 +31,7 @@ public class BookController {
     private final BookModelAssembler bookModelAssembler;
 
 
+
     @Autowired
     public BookController(@Qualifier("BookService")  IBookService bookService, BookModelAssembler bookModelAssembler) {
         this.bookService = bookService;
@@ -45,8 +46,6 @@ public class BookController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDTO> getBooks(Pageable page) {
-        if (page.getPageSize() > this.PAGE_SIZE_LIMIT)
-            page = PageRequest.of(page.getPageNumber(),PAGE_SIZE_LIMIT);
         return this.bookService.getAllBooks(page);
     }
 
