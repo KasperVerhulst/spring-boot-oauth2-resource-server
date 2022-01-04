@@ -1,7 +1,6 @@
 package org.rockkit.poc.resourceserver.service;
 
-import org.rockkit.poc.resourceserver.model.Book;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public interface IBookService {
 
-    public List<BookDTO> getAllBooks();
+    public List<BookDTO> getAllBooks(Pageable page);
     public BookDTO getBook(Long id);
 
     public void createBook(BookDTO bookDTO);
