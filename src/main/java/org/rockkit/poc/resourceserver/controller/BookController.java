@@ -2,12 +2,14 @@ package org.rockkit.poc.resourceserver.controller;
 
 import org.rockkit.poc.resourceserver.exception.BookNotFoundException;
 import org.rockkit.poc.resourceserver.model.Book;
+import org.rockkit.poc.resourceserver.model.BookModelAssembler;
 import org.rockkit.poc.resourceserver.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +28,19 @@ public class BookController {
 
     private final IBookService bookService;
 
-    //max number of books returned in one request
-    private static final int PAGE_SIZE_LIMIT = 100;
+    private final BookModelAssembler bookModelAssembler;
+
 
     @Autowired
-    public BookController(@Qualifier("BookService")  IBookService bookService) {
+    public BookController(@Qualifier("BookService")  IBookService bookService, BookModelAssembler bookModelAssembler) {
         this.bookService = bookService;
+        this.bookModelAssembler = bookModelAssembler;
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BookDTO getBook(@PathVariable Long id) {
-        return this.bookService.getBook(id);
+    public ResponseEntity<EntityModel<BookDTO>> getBook(@PathVariable Long id) {
+        BookDTO book = this.bookService.getBook(id);
+        return ResponseEntity.ok().body(bookModelAssembler.toModel(book));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

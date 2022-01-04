@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.aspectj.bridge.IMessage;
 import org.hibernate.validator.constraints.Range;
 import org.rockkit.poc.resourceserver.annotation.ISBNConstraint;
+import org.springframework.hateoas.RepresentationModel;
 
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ import java.util.Set;
 @Setter
 //omit fields in JSON when null
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BookDTO {
+public class BookDTO extends RepresentationModel<BookDTO> {
 
     @JsonIgnore
     private Long id;
