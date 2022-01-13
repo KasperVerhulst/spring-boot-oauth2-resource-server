@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -52,8 +53,8 @@ public class BookController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PagedModel<EntityModel<BookDTO>>> getBooks(Pageable page) {
-        Page<BookDTO> books = this.bookService.getAllBooks(page);
+    public ResponseEntity<PagedModel<EntityModel<BookDTO>>> getBooks(@SortDefault(sort = "title", direction = Sort.Direction.ASC, caseSensitive = false) Pageable page) {
+        Page<BookDTO> books = this.bookService.getAllBooks(PageRequest.of(page.getPageNumber(),page.getPageSize(),page.getSort()));
         return ResponseEntity.ok().body(pagedBookAssembler.toModel(books,bookModelAssembler));
     }
 
