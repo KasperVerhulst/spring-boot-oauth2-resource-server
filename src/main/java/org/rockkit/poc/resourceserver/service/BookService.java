@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class BookService implements IBookService{
 
 
-    private BookRepository bookRepo;
+    private final BookRepository bookRepo;
 
     @Autowired
     public BookService(BookRepository bookRepository) {
@@ -61,7 +61,6 @@ public class BookService implements IBookService{
 
     @Override
     public void createBook(BookDTO bookDTO) {
-
         try {
             Book book = BookModelMapper.convertDTOToEntity(bookDTO);
             this.bookRepo.save(book);
@@ -71,10 +70,6 @@ public class BookService implements IBookService{
         catch (DataIntegrityViolationException e) {
             throw new BookAlreadyExistsException("Book already exists");
         }
-
-
-
-
     }
 
     @Override

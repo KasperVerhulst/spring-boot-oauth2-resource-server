@@ -10,6 +10,7 @@ import org.aspectj.bridge.IMessage;
 import org.hibernate.validator.constraints.Range;
 import org.rockkit.poc.resourceserver.annotation.ISBNConstraint;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Relation(collectionRelation = "books")
 //omit fields in JSON when null
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookDTO extends RepresentationModel<BookDTO> {

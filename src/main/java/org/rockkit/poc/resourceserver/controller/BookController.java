@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +32,6 @@ public class BookController {
     private final BookModelAssembler bookModelAssembler;
 
 
-
     @Autowired
     public BookController(@Qualifier("BookService")  IBookService bookService, BookModelAssembler bookModelAssembler) {
         this.bookService = bookService;
@@ -45,20 +45,23 @@ public class BookController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDTO> getBooks(Pageable page) {
-        return this.bookService.getAllBooks(page);
+    public ResponseEntity<CollectionModel<EntityModel<BookDTO>>> getBooks(Pageable page) {
+        List<BookDTO> books = this.bookService.getAllBooks(page);
+        return ResponseEntity.ok().body(bookModelAssembler.toCollectionModel(books));
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteBook(@PathVariable Long id) {
+    public ResponseEntity deleteBook(@PathVariable Long id) {
         this.bookService.deleteBook(id);
+        return ResponseEntity.noContent().build();
     }
 
     //POST is not idempotent
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBook( @Valid @RequestBody BookDTO bookDTO) {
+    public ResponseEntity addBook( @Valid @RequestBody BookDTO bookDTO) {
         this.bookService.createBook(bookDTO);
+        return ResponseEntity.noContent().build();
     }
 
     //PUT must be idempotent
