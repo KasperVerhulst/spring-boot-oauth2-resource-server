@@ -21,6 +21,12 @@ public class BookModelAssembler implements RepresentationModelAssembler<BookDTO,
     public EntityModel<BookDTO> toModel(BookDTO book) {
         long id = book.getId();
         return EntityModel.of(book,
+                linkTo(methodOn(BookController.class).getBook(id)).withSelfRel());
+    }
+
+    public EntityModel<BookDTO> toExtendedModel(BookDTO book) {
+        long id = book.getId();
+        return EntityModel.of(book,
                 linkTo(methodOn(BookController.class).getBook(id)).withSelfRel(),
                 linkTo(methodOn(BookController.class).getBooks(null)).withRel("GET all"),
                 linkTo(methodOn(BookController.class).addBook(null)).withRel("CREATE"),

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.aspectj.bridge.IMessage;
 import org.hibernate.validator.constraints.Range;
 import org.rockkit.poc.resourceserver.annotation.ISBNConstraint;
 import org.springframework.hateoas.RepresentationModel;
@@ -15,8 +14,6 @@ import org.springframework.hateoas.server.core.Relation;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @Getter

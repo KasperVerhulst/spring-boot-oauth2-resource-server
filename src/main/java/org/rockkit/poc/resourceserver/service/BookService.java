@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +40,10 @@ public class BookService implements IBookService{
 
 
     @Override
-    public List<BookDTO> getAllBooks(Pageable page) {
+    public Page<BookDTO> getAllBooks(Pageable page) {
          Page<Book> books = this.bookRepo.findAll(page);
          if (! books.isEmpty())
-             return books.stream().map(b -> BookModelMapper.convertEntityToDTO(b)).collect(Collectors.toList());
+             return books.map(BookModelMapper::convertEntityToDTO);
          else
              throw new BookNotFoundException("No books found");
     }

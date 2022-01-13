@@ -6,17 +6,21 @@ import org.rockkit.poc.resourceserver.model.BookModelAssembler;
 import org.rockkit.poc.resourceserver.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 
+import javax.print.DocFlavor;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -31,6 +35,9 @@ public class BookController {
 
     private final BookModelAssembler bookModelAssembler;
 
+    @Autowired
+    private PagedResourcesAssembler pagedBookAssembler;
+
 
     @Autowired
     public BookController(@Qualifier("BookService")  IBookService bookService, BookModelAssembler bookModelAssembler) {
@@ -41,13 +48,13 @@ public class BookController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EntityModel<BookDTO>> getBook(@PathVariable Long id) {
         BookDTO book = this.bookService.getBook(id);
-        return ResponseEntity.ok().body(bookModelAssembler.toModel(book));
+        return ResponseEntity.ok().body(bookModelAssembler.toExtendedModel(book));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CollectionModel<EntityModel<BookDTO>>> getBooks(Pageable page) {
-        List<BookDTO> books = this.bookService.getAllBooks(page);
-        return ResponseEntity.ok().body(bookModelAssembler.toCollectionModel(books));
+    public ResponseEntity<PagedModel<EntityModel<BookDTO>>> getBooks(Pageable page) {
+        Page<BookDTO> books = this.bookService.getAllBooks(page);
+        return ResponseEntity.ok().body(pagedBookAssembler.toModel(books,bookModelAssembler));
     }
 
     @DeleteMapping(path = "/{id}")
