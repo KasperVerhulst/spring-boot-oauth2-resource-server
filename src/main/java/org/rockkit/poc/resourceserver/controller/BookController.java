@@ -54,14 +54,14 @@ public class BookController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PagedModel<EntityModel<BookDTO>>> getBooks(@SortDefault(sort = "title", direction = Sort.Direction.ASC, caseSensitive = false) Pageable page) {
-        Page<BookDTO> books = this.bookService.getAllBooks(PageRequest.of(page.getPageNumber(),page.getPageSize(),page.getSort()));
+        Page<BookDTO> books = this.bookService.getAllBooks(page);
         return ResponseEntity.ok().body(pagedBookAssembler.toModel(books,bookModelAssembler));
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deleteBook(@PathVariable Long id) {
         this.bookService.deleteBook(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     //POST is not idempotent
@@ -69,7 +69,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity addBook( @Valid @RequestBody BookDTO bookDTO) {
         this.bookService.createBook(bookDTO);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     //PUT must be idempotent
@@ -79,7 +79,7 @@ public class BookController {
             this.bookService.getBook(id);
             bookDTO.setId(id);
             this.bookService.updateBook(bookDTO);
-            return new ResponseEntity(HttpStatus.OK);
+            return ResponseEntity.ok().build();
         }
         catch (BookNotFoundException e) {
             this.bookService.createBook(bookDTO);
