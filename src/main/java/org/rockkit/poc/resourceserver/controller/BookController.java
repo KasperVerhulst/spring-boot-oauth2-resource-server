@@ -33,12 +33,11 @@ public class BookController {
     //API versioning
     protected static final String PATH = "/api/v1/books";
 
-    //allowed query params for which
+    //allowed query params for which we allow smaller than or greater than
     private static final Set<String> NUMERICAL_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"releaseYear"}));
 
-    private static final Set<String> ALL_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"title", "auhtor", "publisher", "genres", "releaseYear", "isbn"}));
-
-    private static final Set<String> SET_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"genres"}));
+    //allowed query params
+    private static final Set<String> ALL_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"title", "author", "publisher", "genres", "releaseYear", "isbn"}));
 
     private final IBookService bookService;
 
@@ -63,12 +62,6 @@ public class BookController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PagedModel<EntityModel<BookDTO>>> getBooks(
             @SortDefault(sort = "title", direction = Sort.Direction.ASC, caseSensitive = false) Pageable page,
-//            @RequestParam(required = false, name = "title") String title,
-//            @RequestParam(required = false, name = "author") String author,
-//            @RequestParam(required = false, name = "publisher") String publisher,
-//            @RequestParam(required = false, name = "genres") List<String> genres,
-//            @RequestParam(required = false, name = "releaseYear") String year,
-//            @RequestParam(required = false, name = "isbn") String isbn)
             @RequestParam Map<String,String> allRequestParams)
     {
         Set<BookFilter> filters = new HashSet<>();
@@ -117,26 +110,21 @@ public class BookController {
         //must be a numerical
         if (queryValue.startsWith("+") && NUMERICAL_QUERY_PARAMS.contains(param)) {
             String value =  queryValue.substring(1);
-            return BookFilter.builder().field(param).operator(BookFilterOperation.GREATER_THAN).values(new HashSet<>(Arrays.asList(value))).build();
+            return BookFilter.builder().field(param).operator(BookFilterOperation.GREATER_THAN).values(value).build();
         }
 
         else if (queryValue.startsWith("-") && NUMERICAL_QUERY_PARAMS.contains(param)) {
             String value =  queryValue.substring(1);
-            return BookFilter.builder().field(param).operator(BookFilterOperation.SMALLER_THAN).values(new HashSet<>(Arrays.asList(value))).build();
+            return BookFilter.builder().field(param).operator(BookFilterOperation.SMALLER_THAN).values(value).build();
         }
 
         else if (queryValue.startsWith("!") && ALL_QUERY_PARAMS.contains(param)) {
             String value =  queryValue.substring(1);
-            return BookFilter.builder().field(param).operator(BookFilterOperation.NOT_EQUAL).values(new HashSet<>(Arrays.asList(value))).build();
-        }
-
-        else if(queryValue.contains(",") && SET_QUERY_PARAMS.contains(param)) {
-            String[] values = queryValue.split(",");
-            return BookFilter.builder().field(param).operator(BookFilterOperation.IN).values(new HashSet<>(Arrays.asList(values))).build();
+            return BookFilter.builder().field(param).operator(BookFilterOperation.NOT_EQUAL).values(value).build();
         }
 
         else if (ALL_QUERY_PARAMS.contains(param)) {
-            return BookFilter.builder().field(param).operator(BookFilterOperation.EQUAL).values(new HashSet<>(Arrays.asList(queryValue))).build();
+            return BookFilter.builder().field(param).operator(BookFilterOperation.EQUAL).values(queryValue).build();
         }
 
         return null;

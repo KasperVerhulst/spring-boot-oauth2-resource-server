@@ -13,7 +13,7 @@ public class BookFilter {
 
     private String field;
     private BookFilterOperation operator;
-    private Set<String> values;
+    private String values;
 
 
 }
