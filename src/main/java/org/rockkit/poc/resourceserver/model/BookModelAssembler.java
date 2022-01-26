@@ -28,7 +28,7 @@ public class BookModelAssembler implements RepresentationModelAssembler<BookDTO,
         long id = book.getId();
         return EntityModel.of(book,
                 linkTo(methodOn(BookController.class).getBook(id)).withSelfRel(),
-                linkTo(methodOn(BookController.class).getBooks(null)).withRel("GET all"),
+                linkTo(methodOn(BookController.class).getBooks(null,null)).withRel("GET all"),
                 linkTo(methodOn(BookController.class).addBook(null)).withRel("CREATE"),
                 linkTo(methodOn(BookController.class).updateBook(null,id)).withRel("UPDATE"),
                 linkTo(methodOn(BookController.class).deleteBook(id)).withRel("DELETE"));
@@ -43,7 +43,7 @@ public class BookModelAssembler implements RepresentationModelAssembler<BookDTO,
             booksWithLinks.add(EntityModel.of(book.add(linkTo(methodOn(BookController.class).getBook(book.getId())).withSelfRel())));
         }
 
-        return CollectionModel.of(booksWithLinks,linkTo(methodOn(BookController.class).getBooks(null)).withSelfRel());
+        return CollectionModel.of(booksWithLinks,linkTo(methodOn(BookController.class).getBooks(null,null)).withSelfRel());
     }
 
 }
