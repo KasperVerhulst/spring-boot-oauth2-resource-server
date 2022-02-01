@@ -37,7 +37,10 @@ public class BookController {
     private static final Set<String> NUMERICAL_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"releaseYear"}));
 
     //allowed query params
-    private static final Set<String> ALL_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"title", "author", "publisher", "genres", "releaseYear", "isbn"}));
+    private static final Set<String> ALL_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"title", "author", "publisher",  "releaseYear", "isbn"}));
+
+    //
+    private static final Set<String> SET_QUERY_PARAMS = new HashSet<String>(Arrays.asList(new String[]{"genres"}));
 
     private final IBookService bookService;
 
@@ -121,6 +124,10 @@ public class BookController {
         else if (queryValue.startsWith("!") && ALL_QUERY_PARAMS.contains(param)) {
             String value =  queryValue.substring(1);
             return BookFilter.builder().field(param).operator(BookFilterOperation.NOT_EQUAL).values(value).build();
+        }
+
+        else if(SET_QUERY_PARAMS.contains(param)) {
+            return BookFilter.builder().field(param).operator(BookFilterOperation.IN).values(queryValue).build();
         }
 
         else if (ALL_QUERY_PARAMS.contains(param)) {
