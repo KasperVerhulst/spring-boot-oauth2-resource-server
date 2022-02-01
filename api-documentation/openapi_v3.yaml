@@ -1,0 +1,229 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/v1/books/{id}:
+    get:
+      tags:
+      - book-controller
+      operationId: getBook
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityModelBookDTO'
+    put:
+      tags:
+      - book-controller
+      operationId: updateBook
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    delete:
+      tags:
+      - book-controller
+      operationId: deleteBook
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/books:
+    get:
+      tags:
+      - book-controller
+      operationId: getBooks
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: allRequestParams
+        in: query
+        required: true
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedModelEntityModelBookDTO'
+    post:
+      tags:
+      - book-controller
+      operationId: addBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    BookDTO:
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        genres:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        release:
+          type: integer
+          format: int32
+        isbn:
+          type: integer
+          format: int64
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+        hreflang:
+          type: string
+        media:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        deprecation:
+          type: string
+        profile:
+          type: string
+        name:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    EntityModelBookDTO:
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        genres:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        release:
+          type: integer
+          format: int32
+        isbn:
+          type: integer
+          format: int64
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+    PagedModelEntityModelBookDTO:
+      type: object
+      properties:
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityModelBookDTO'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
