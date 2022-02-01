@@ -9,13 +9,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 
 public class BookSpecification implements Specification<Book> {
     
-    Set<BookFilter> filters = null;
+    Set<BookFilter> filters;
 
     public BookSpecification(Set<BookFilter> filters) {
         this.filters = filters;
@@ -23,31 +25,36 @@ public class BookSpecification implements Specification<Book> {
 
     @Override
     public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-
+        Set<Predicate> predicate = new HashSet<>();
         for (BookFilter filter : filters) {
-            switch (filter.getOperator()) {
-                case EQUAL:
-                    return criteriaBuilder.equal(root.get(filter.getField()),
-                            castToRequiredType(root.get(filter.getField()).getJavaType(), filter.getValues()));
-
-                case NOT_EQUAL:
-                    return criteriaBuilder.notEqual(root.get(filter.getField()),
-                            castToRequiredType(root.get(filter.getField()).getJavaType(), filter.getValues()));
-
-                case SMALLER_THAN:
-                    return criteriaBuilder.lessThan(root.get(filter.getField()), filter.getValues());
-
-                case GREATER_THAN:
-                    return criteriaBuilder.greaterThan(root.get(filter.getField()), filter.getValues());
-
-                case IN:
-                    return root.join(filter.getField()).in(castToRequiredType(root.get(filter.getField()).getJavaType(), filter.getValues()));
-
-                default:
-                    throw new UnsupportedOperationException("filter operation not supported for this query param");
-            }
+             predicate.add(createPredicate(root, query, criteriaBuilder, filter));
         }
-        return null;
+        return criteriaBuilder.and(predicate.toArray(new Predicate[predicate.size()]));
+    }
+
+    private Predicate createPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder, BookFilter filter) {
+
+        switch (filter.getOperator()) {
+            case EQUAL:
+                return criteriaBuilder.equal(root.get(filter.getField()),
+                        castToRequiredType(root.get(filter.getField()).getJavaType(), filter.getValues()));
+
+            case NOT_EQUAL:
+                return criteriaBuilder.notEqual(root.get(filter.getField()),
+                        castToRequiredType(root.get(filter.getField()).getJavaType(), filter.getValues()));
+
+            case SMALLER_THAN:
+                return criteriaBuilder.lessThan(root.get(filter.getField()), filter.getValues());
+
+            case GREATER_THAN:
+                return criteriaBuilder.greaterThan(root.get(filter.getField()), filter.getValues());
+
+            case IN:
+                return root.join(filter.getField()).in(castToRequiredType(root.get(filter.getField()).getJavaType(), filter.getValues()));
+
+            default:
+                throw new UnsupportedOperationException("filter operation not supported for this query param");
+        }
     }
 
     /**
