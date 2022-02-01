@@ -11,6 +11,7 @@ Advantages for keeping DTO and model as two separate classes. The model reflects
 * you can present different object to different frontends that possibly require other properties
 * a DTO can group fields from multiple backend stores
 
+The ModelMapper library allows you to quickly convert between Entity and DTO without writing too much boilerplate code.
 ### Spring Boot layered architecture
 * Controller layer: accept and respond to HTTP requests. Serialization and deserialization of JSON to POJOs
 * Service layer: business logic
@@ -68,6 +69,63 @@ injected when no specific `@Qualifier` is specified.
 * 406 *Not Acceptable* : indicates that the API is not able to generate any of the client’s preferred media types, as indicated by the Accept request header
 * 409 *Conflict* : request could not be completed due to a conflict with the current state of the resource
 * 410 *Gone* : resource existed before, but is no longer available
-### Filter, Pagination and Sorting
+### Pagination and Sorting
 
+### Filtering
+Spring Data JPA provides the *JpaRepository* interface that extends the *PagingAndSortingRepository* interface even further. 
+This interface allows you to create Query methods that Spring  will automatically transform into the related SQL query. For instance, you can create
+queries to search for books with a specific title or genres or books that were released before a certain year:
+
+``` 
+List<Book> findAllByTitle(String title)
+
+List<Book> findAllByReleaseYearLessThan(int releaseYear)
+
+List<Book> findAllByGenreIn(List<String> genres)
+```
+
+In theory, you could even create more complex queries:
+
+```
+List<Book> findAllByTitleAndPublisherAndReleaseyearBetween(String title, String publisher, int bottom, int top)
+```
+The problem with this approach is that you need to explicitly define every possible query method. Clearly, the number of methods explodes
+when the number of fields increases. If we would like to add another field to the Entity than we possibly have to introduce a whole lot of query methods to make all kind
+of new queries possible. Furthermore the names of the methods become very long and cumbersome. All these reason make clear that
+this strategy is only affordable when there is a very limited set of queries. We would like a more general approach where it is easy to add new queries.
+
+Here is where Criteria API, Predicates, and Specification make their appearance. Specifications form an atomic predicate that you can combine
+dynamically to build complex queries.
+When you make repository interface extend the *JpaSpecificationExecutor* interface, you can pass a Specification along with the Pageable to the findAll() method.
+``` 
+public BookSpecifications {
+    public static Specification<Book> belongsToGenre(String genre){
+      return (root, query, criteriaBuilder)-> 
+          criteriaBuilder.in(root.get(Book_.GENRES)).value(genre);
+    }
+    
+    public static Specification<Book> isRecentBook() {
+      return (root, query, criteriaBuilder) ->
+          criteriaBuilder.equal(root.get(Book.RELEASE_YEAR), LocalDate.now().minusYears(5).getYear());
+    }  
+}
+```
+Specifications make it possible to create custom predicates that are not possible with the standard query methods.
+Atomic Specifications are loosely coupled and can be dynamically combined with and(), or(), where()... 
+```
+bookRepository.findAll(where(belongsToGenre()).and(isFromThisyear(new Date().getYear())));
+```
+
+Still we would need to predefine every possible filter the client can submit because in practice, you often
+ don’t know beforehand what combination of properties the client is going to use to filter the products. That 's why our final strategy is to
+ construct a filter based on the query params. This filter is then used to dynamically create a Specification. This allows queries like:
+ 
+```
+http://localhost:8080/api/v1/books?publisher=Prometheus
+http://localhost:8080/api/v1/books?isbn=!9789491618475
+http://localhost:8080/api/v1/books?releaseYear=-2000
+http://localhost:8080/api/v1/books?releaseYear=+2000
+http://localhost:8080/api/v1/books?releaseYear=2014&author=Dimitri Verhulst
+```
 ### HATEOAS
+Hypermedia as the Engine of Application State (HATEOAS)
