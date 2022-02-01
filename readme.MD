@@ -117,6 +117,15 @@ bookRepository.findAll(where(belongsToGenre()).and(isFromThisyear(new Date().get
 ```
 
 Still we would need to predefine every possible filter the client can submit because in practice, you often
- don’t know beforehand what combination of properties the client is going to use to filter the products.
+ don’t know beforehand what combination of properties the client is going to use to filter the products. That 's why our final strategy is to
+ construct a filter based on the query params. This filter is then used to dynamically create a Specification. This allows queries like:
+ 
+```
+http://localhost:8080/api/v1/books?publisher=Prometheus
+http://localhost:8080/api/v1/books?isbn=!9789491618475
+http://localhost:8080/api/v1/books?releaseYear=-2000
+http://localhost:8080/api/v1/books?releaseYear=+2000
+http://localhost:8080/api/v1/books?releaseYear=2014&author=Dimitri Verhulst
+```
 ### HATEOAS
 Hypermedia as the Engine of Application State (HATEOAS)
