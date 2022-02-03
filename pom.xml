@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>org.rockkit.poc</groupId>
 	<artifactId>resource-server</artifactId>
-	<version>0.2.0</version>
+	<version>1.0.0</version>
 	<name>resource-server</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Spring Boot Library Rest API</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

@@ -808,7 +808,37 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Jan Van Looveren\",\r\n    \"publisher\": \"Atlas Contact\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441365\r\n}",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Jan Van Looveren\",\r\n    \"publisher\": \"Atlas Contact\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": -2013,\r\n    \"isbn\": 9789025441365\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create book missing title",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"\",\r\n    \"author\": \"Jan Van Looveren\",\r\n    \"publisher\": \"Atlas Contact\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441365\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -842,7 +872,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/books/11",
+									"raw": "http://localhost:8080/api/v1/books/14",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -852,7 +882,7 @@
 										"api",
 										"v1",
 										"books",
-										"11"
+										"14"
 									]
 								}
 							},
@@ -864,13 +894,44 @@
 					"name": "PATCH",
 					"item": [
 						{
-							"name": "update book author",
+							"name": "update genre",
 							"request": {
 								"method": "PATCH",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"genres\" : [\"test\"]\r\n}",
+									"raw": "{\r\n    \"genres\" : [\r\n        \"Novelle\",\r\n        \"Spannend\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/13",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"13"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "wipe title",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\" : \"\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -893,6 +954,161 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "wipe publisher",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"publisher\" : \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/13",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"13"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update title and publisher",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Spraakwaterval\",\r\n    \"publisher\": \"Lannoo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update author",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"author\": \"Ward Ruyslinck\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update genres",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"genres\" : [\r\n        \"Novelle\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/13",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"13"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update non-existent book",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"genres\" : [\r\n        \"Novelle\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/17",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"17"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -900,13 +1116,13 @@
 					"name": "PUT",
 					"item": [
 						{
-							"name": "update book",
+							"name": "update publisher",
 							"request": {
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Dimitri Verhelst\",\r\n    \"publisher\" : \"vanIn uitgeverij\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441265\r\n}",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Dimitri Verhulst\",\r\n    \"publisher\" : \"vanIn uitgeverij\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441265\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -925,6 +1141,68 @@
 										"v1",
 										"books",
 										"14"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create book",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Dimitri Verhulst\",\r\n    \"publisher\" : \"vanIn uitgeverij\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441265\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/14",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"14"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update author",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Marc De Bel\",\r\n    \"publisher\": \"Atlas Contact\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441265 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/16",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"16"
 									]
 								}
 							},
