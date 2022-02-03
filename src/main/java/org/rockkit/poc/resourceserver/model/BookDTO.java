@@ -20,7 +20,7 @@ import java.util.Set;
 @Setter
 @Relation(collectionRelation = "books")
 //omit fields in JSON when null
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BookDTO extends RepresentationModel<BookDTO> {
 
     @JsonIgnore
