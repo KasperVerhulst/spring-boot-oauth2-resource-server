@@ -1,6 +1,5 @@
 package org.rockkit.poc.resourceserver.controller;
 
-
 import org.rockkit.poc.resourceserver.exception.BookNotFoundException;
 import org.rockkit.poc.resourceserver.filter.BookFilter;
 import org.rockkit.poc.resourceserver.filter.BookFilterOperation;
@@ -21,10 +20,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.rockkit.poc.resourceserver.model.BookDTO;
 
-
 import javax.validation.Valid;
 import java.util.*;
 
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(BookController.PATH)
@@ -106,6 +106,14 @@ public class BookController {
             this.bookService.createBook(bookDTO);
             return new ResponseEntity(HttpStatus.CREATED);
         }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity patchBook(@RequestBody BookDTO bookDTO, @PathVariable Long id) {
+        bookDTO.setId(id);
+        this.bookService.updateBook(bookDTO);
+        return ResponseEntity.ok().build();
     }
 
     private BookFilter parseRequestParam(String param, String queryValue) {
