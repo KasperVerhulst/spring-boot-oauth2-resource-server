@@ -1,0 +1,938 @@
+{
+	"info": {
+		"_postman_id": "c440e29f-663a-4708-befd-b7faaade5f42",
+		"name": "Library Resource Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BookController",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "Get all books",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by title",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?title=Sprakeloos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "title",
+											"value": "Sprakeloos"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by country",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?country=belgium",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "country",
+											"value": "belgium"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by publisher",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?publisher=Prometheus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "publisher",
+											"value": "Prometheus"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by publisher and paginate",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?publisher=Prometheus&size=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "publisher",
+											"value": "Prometheus"
+										},
+										{
+											"key": "size",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by genre",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?genres=Fictie",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "genres",
+											"value": "Fictie"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by genres",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?genre=humor,thriller",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "genre",
+											"value": "humor,thriller"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by isbn",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?isbn=9789022301692",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "isbn",
+											"value": "9789022301692"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by not isbn",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?isbn=!9789491618475",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "isbn",
+											"value": "!9789491618475"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by author",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?author=Tom Lanoye",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "author",
+											"value": "Tom Lanoye"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by author and year",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?author=Pieter Aspe&releaseYear=2013",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "author",
+											"value": "Pieter Aspe"
+										},
+										{
+											"key": "releaseYear",
+											"value": "2013"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by not author",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?author=!Tom Lanoye",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "author",
+											"value": "!Tom Lanoye"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by releaseYear",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?releaseYear=2012",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "releaseYear",
+											"value": "2012"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by releaseYear and author",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?releaseYear=2014&author=Dimitri Verhulst",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "releaseYear",
+											"value": "2014"
+										},
+										{
+											"key": "author",
+											"value": "Dimitri Verhulst"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by not releaseYear",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?releaseYear=!2012",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "releaseYear",
+											"value": "!2012"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book by releaseYear and publisjer",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?releaseYear=2012&publisher=Prometheus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "releaseYear",
+											"value": "2012"
+										},
+										{
+											"key": "publisher",
+											"value": "Prometheus"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book before releaseYear",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?releaseYear=-2000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "releaseYear",
+											"value": "-2000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search book after releaseYear",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?releaseYear=%2B2000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "releaseYear",
+											"value": "%2B2000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get one books",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all books with pagination",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books?size=105",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "size",
+											"value": "105"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "Create book",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Dimitri Verhulst\",\r\n    \"publisher\": \"Atlas Contact\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441265 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create multiple books",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"title\": \"De laatkomer\",\r\n        \"author\": \"Dimitri Verhulst\",\r\n        \"publisher\": \"Atlas Contact\",\r\n        \"release\": 2013,\r\n        \"isbn\": 9789025441265\r\n    },\r\n    {\r\n        \"title\": \"De nieuwkomer\",\r\n        \"author\": \"Dimitri Verhulst\",\r\n        \"publisher\": \"Atlas Contact\",\r\n        \"release\": 2013,\r\n        \"isbn\": 9789025541265\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create invalid book",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Jan Van Looveren\",\r\n    \"publisher\": \"Atlas Contact\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441365\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE",
+					"item": [
+						{
+							"name": "Delete one book",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/11",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"11"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PATCH",
+					"item": [
+						{
+							"name": "update book author",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"genres\" : [\"test\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/14",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"14"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT",
+					"item": [
+						{
+							"name": "update book",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"De laatkomer\",\r\n    \"author\": \"Dimitri Verhelst\",\r\n    \"publisher\" : \"vanIn uitgeverij\",\r\n    \"genres\": [\r\n        \"Fictie\",\r\n        \"Psychologische Roman\",\r\n        \"Humor\"\r\n    ],\r\n    \"release\": 2013,\r\n    \"isbn\": 9789025441265\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/books/14",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										"14"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
